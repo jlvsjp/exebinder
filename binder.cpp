@@ -79,7 +79,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
         STARTUPINFO si = {sizeof(si)};
         PROCESS_INFORMATION pi;
         si.dwFlags = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;
-        si.wShowWindow = SW_HIDE;
+        si.wShowWindow = nCmdShow;
 
         BOOL bRet = CreateProcess (
             NULL,   // 不在此指定可执行文件的文件名
@@ -106,7 +106,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
         STARTUPINFO si2 = {sizeof(si2)};
         PROCESS_INFORMATION pi2;
         si2.dwFlags = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;
-        si2.wShowWindow = nCmdShow;
+        si2.wShowWindow = SW_HIDE;
 
         BOOL bRet2 = CreateProcess (
             NULL,       // 不在此指定可执行文件的文件名
