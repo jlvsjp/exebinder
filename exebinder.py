@@ -152,11 +152,14 @@ if __name__ == "__main__":
     parser.add_argument('primary', help="Primary exe file.")
     parser.add_argument('secondary', help="secondary exe file.")
     parser.add_argument('--uac', action="store_true", help="Enable uac.")
+    parser.add_argument('--gui', action="store_true", help="Enable -mwindows CXXFLAG, works when the secondary is GUI exe file.")
     parser.add_argument('--x86', action="store_true", help="Enable -m32 CXXFLAG, when build in x64 platform.")
     parser.add_argument('--ico', type=str, help="Set bind file icon.")
     parser.add_argument('--out', type=str, default="new.exe", help="Output binded exe file.")
 
     args = parser.parse_args()
+
+    cxxflag = "%s %s" % (str("-mwindows" if args.gui else ""), str("-m32" if args.x86 else ""))
 
     if args.ico:
         img = Image.open(args.ico)
@@ -187,7 +190,7 @@ if __name__ == "__main__":
     if args.uac:
         os.system("windres %s --input-format=rc -O coff -i uac.rc -o uac.res" % str("-F pe-i386" if args.x86 else ""))
 
-    os.system("g++ %s -mwindows -O3 main.cpp %s %s -o %s" % (str("-m32" if args.x86 else ""), str("uac.res" if args.uac else ""), str("icon.res" if icon_flag else ""), args.out))
+    os.system("g++ %s main.cpp memory_module.c %s %s -o %s" % (cxxflag, str("uac.res" if args.uac else ""), str("icon.res" if icon_flag else ""), args.out))
     os.system("strip %s" % args.out)
     print("Bind to %s success! " % args.out)
 

