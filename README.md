@@ -27,4 +27,4 @@ I suggest before use this tool, you may check the architecture of the secondary 
 
 例如：如果是Windows 80386 的 console 程序，则需要指定--x86，但不需要指定--gui.
 
-For example, if it is Windows 80386 console program, you need run `python exebinder.py` with `--x86` flag, but `--gui` is not need.
+For example, if it is Windows 80386 console program, you need run `python exebinder.py` with `--x86` and `--non-gui` flags.
