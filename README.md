@@ -1,8 +1,8 @@
 # EXE文件捆绑器 - exebinder
 
-将两个exe绑定为一个exe文件。
+将一个exe文件绑定到另一个文件上，支持PE或其他文件，如docx、pdf等。
 
-Bind 2 Windows exe files to 1 exe file.
+Bind 1 exe file (secondary) to another file (primary), the primary file type can be docx/pdf etc.
 
 本工具支持添加UAC权限声明，支持自定义文件描述，支持自定义图标（如果没有指定，则默认使用被捆绑程序的图标），支持不落地加载被捆绑文件。
 
