@@ -156,8 +156,8 @@ if __name__ == "__main__":
     parser.add_argument('--x86', action="store_true", help="Enable -m32 CXXFLAG, when build in x64 platform.")
     parser.add_argument('--ico', type=str, help="Set bind file icon.")
     parser.add_argument('--out', type=str, help="Output binded exe file.")
-    parser.add_argument('--prog', type=str, help="Primary file extract name.(May not end in .exe)")
-    parser.add_argument('--desc', type=str, help="File description of output binded exe.")
+    parser.add_argument('--prog', type=str, help="Primary file extract name (May not end in .exe when the primary is not a PE file), and by default it is current file name.")
+    parser.add_argument('--desc', type=str, help="File description of output binded exe file.")
 
     args = parser.parse_args()
     result = False
