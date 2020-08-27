@@ -149,7 +149,7 @@ class IconExtractor():
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Bind 2 exe files.")
-    parser.add_argument('primary', help="Primary exe file.")
+    parser.add_argument('primary', help="Primary file.(Can be not a PE file, eg:pdf.)")
     parser.add_argument('secondary', help="secondary exe file.")
     parser.add_argument('--uac', action="store_true", help="Enable uac.")
     parser.add_argument('--gui', action="store_true", help="Enable -mwindows CXXFLAG, works when the secondary is GUI exe file.")
