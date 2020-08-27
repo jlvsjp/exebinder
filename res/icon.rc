@@ -1,0 +1,32 @@
+#include <windows.h>
+
+1 ICON "icon.ico"
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGS 0x0L
+ FILEFLAGSMASK 0x3fL
+ FILEOS 0x00040004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404b0" //support chinese
+        BEGIN
+            // VALUE "CompanyName", "XXXXCOMPANY"
+            VALUE "FileDescription", "FILEDESCRIPTION"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "LegalCopyright", "Copyright (c) 2020"
+            // VALUE "InternalName", ""
+            // VALUE "OriginalFilename", "origin.exe"
+            // VALUE "ProductName", "XXX"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200 //chinese
+	END
+END
