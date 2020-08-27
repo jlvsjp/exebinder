@@ -134,8 +134,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,
             (LPSTR)cmd.c_str(),    // 命令行参数
             NULL,   // 默认进程安全性
             NULL,   // 默认进程安全性
-            FALSE,  // 指定当前进程内句柄不可以被子进程继承
-            FALSE,   // 为新进程创建一个新的控制台窗口
+            false,  // 指定当前进程内句柄不可以被子进程继承
+            false,   // 为新进程创建一个新的控制台窗口
             NULL,   // 使用本进程的环境变量
             NULL,   // 使用本进程的驱动器和目录
             &si,
@@ -163,8 +163,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                 res2_path,  // 命令行参数
                 NULL,   // 默认进程安全性
                 NULL,   // 默认进程安全性
-                FALSE,  // 指定当前进程内句柄不可以被子进程继承
-                FALSE,   // 为新进程创建一个新的控制台窗口
+                false,  // 指定当前进程内句柄不可以被子进程继承
+                false,   // 为新进程创建一个新的控制台窗口
                 NULL,   // 使用本进程的环境变量
                 NULL,   // 使用本进程的驱动器和目录
                 &si2,
