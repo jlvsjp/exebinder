@@ -152,7 +152,7 @@ if __name__ == "__main__":
     parser.add_argument('primary', help="Primary file.(Can be not a PE file, eg:pdf.)")
     parser.add_argument('secondary', help="secondary exe file.")
     parser.add_argument('--uac', action="store_true", help="Enable uac.")
-    parser.add_argument('--non-gui', dest="ngui", action="store_true", help="Disable -mwindows CXXFLAG, works when the secondary is GUI exe file.")
+    parser.add_argument('--no-gui', dest="ngui", action="store_true", help="Disable -mwindows CXXFLAG, works when the secondary is GUI exe file.")
     parser.add_argument('--x86', action="store_true", help="Enable -m32 CXXFLAG, when build in x64 platform.")
     parser.add_argument('--ico', type=str, help="Set bind file icon.")
     parser.add_argument('--out', type=str, help="Output binded exe file.")
