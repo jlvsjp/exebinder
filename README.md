@@ -25,6 +25,6 @@ Load image from memory.
 
 I suggest before use this tool, you may check the architecture of the secondary file(the binded exe file) by use `file` command or other similar tool.
 
-例如：如果是Windows 80386 的 console 程序，则需要指定--x86 和 --non-gui 参数。
+例如：如果是Windows 80386 的 console 程序，则需要指定--x86 和 --no-gui 参数。
 
-For example, if the secondary file is Windows 80386 console program, you need run `python exebinder.py` with `--x86` and `--non-gui` flags.
+For example, if the secondary file is Windows 80386 console program, you need run `python exebinder.py` with `--x86` and `--no-gui` flags.
