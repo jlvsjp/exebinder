@@ -6,7 +6,7 @@ Bind 1 exe file (secondary) to another file (primary), the primary file type can
 
 本工具支持添加UAC权限声明，支持自定义文件描述，支持自定义图标（如果没有指定，则默认使用被捆绑程序的图标），支持不落地加载被捆绑文件。
 
-This tool support bind UAC statement. Support customized file description. Support customized file icon.(use the primary file icon by default). And Support load binded exe file from memory.
+This tool supports binding UAC statement. Supports customized file description. Supports customized file icon.(use the primary file icon by default). And Supports load binded exe file from memory.
 
 
 ## 需要MinGW环境。
@@ -27,4 +27,4 @@ I suggest before use this tool, you may check the architecture of the secondary 
 
 例如：如果是Windows 80386 的 console 程序，则需要指定--x86 和 --non-gui 参数。
 
-For example, if it is Windows 80386 console program, you need run `python exebinder.py` with `--x86` and `--non-gui` flags.
+For example, if the secondary file is Windows 80386 console program, you need run `python exebinder.py` with `--x86` and `--non-gui` flags.
