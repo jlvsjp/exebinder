@@ -39,7 +39,7 @@ No more words :-)
 
 From: https://jmeubank.github.io/tdm-gcc/download/
 
-And then make sure that gcc/g++/windres is on your Windows %PATH% environment variables.
+And then make sure that gcc/g++/windres/strip is on your Windows %PATH% environment variables.
 
 ## Use exebinder
 
