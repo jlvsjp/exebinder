@@ -19,7 +19,7 @@ Cause g++/windres/strip prog be used, and TDM-GCC is recommended.
 
 ## 不落地加载
 
-Load image from memory.
+Loading exe image from memory.
 
 建议先使用file命令查看一下需要捆绑的文件的架构。
 
