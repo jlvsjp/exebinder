@@ -33,7 +33,7 @@ For example, if the secondary file is Windows 80386 console program, you need ru
 
 ### Install Python2.7 and PKG.
 
-No more words for install python.
+No more words for install python :-)
 
 ### Install pip
 
