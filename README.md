@@ -45,7 +45,7 @@ And then make sure that gcc/g++/windres is on your Windows %PATH% environment va
 
 `python exebinder.py --help`
 
-Bind trojan.exe with xxx.exe which is a CLI program with UAC permission, and new.exe is be generated. When new.exe is running, you can see the process description is "Microsoft Windows Command Line Program".
+Bind trojan.exe with xxx.exe which is a CLI program with UAC permission, and new.exe is be generated. When new.exe running, you can see the process description is "Microsoft Windows Command Line Program".
 
 `python exebinder.py --uac --no-gui --dec "Microsoft Windows Command Line Program" xxx.exe trojan.exe --out new.exe` 
  
@@ -53,9 +53,9 @@ Bind trojan.exe with xxx.exe which is a GUI program and x86 architecture.
 
 `python exebinder.py --x86 xxx.exe trojan.exe --out new.exe`
 
-Bind trojan.exe with xxx.pdf and UAC permission. When new.exe running, the default pdf reader openning for reading the xxx.pdf, which name is be changed resume.pdf at runtime.
+Bind trojan.exe with xxx.pdf and UAC permission, and set the new icon as `pdfico.jpg`. When new.exe running, the default pdf reader openning for reading the xxx.pdf, which name is be changed resume.pdf at runtime.
 
-`python exebinder --prog resume.pdf --uac xxx.pdf trojan.exe --out new.exe`
+`python exebinder --ico .\pdfico.jpg --prog resume.pdf --uac xxx.pdf trojan.exe --out new.pdf.exe`
 
 
 ## TODO
