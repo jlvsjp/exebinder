@@ -31,9 +31,19 @@ For example, if the secondary file is Windows 80386 console program, you need ru
 
 ## Install
 
-### Install Python2.7
+### Install Python2.7 and PKG.
 
-No more words :-)
+No more words for install python.
+
+### Install pip
+
+Download: https://bootstrap.pypa.io/get-pip.py
+
+Run `python get-pip.py`
+
+### Install PKG
+
+Run `pip install -r requirements.txt`
 
 ### Install tdm-gcc
 
