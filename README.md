@@ -33,13 +33,15 @@ For example, if the secondary file is Windows 80386 console program, you need ru
 
 ### Install Python2.7
 
+No more words :-)
+
 ### Install tdm-gcc
 
 From: https://jmeubank.github.io/tdm-gcc/download/
 
 And then make sure that gcc/g++/windres is on your Windows %PATH% environment variables.
 
-### Use exebinder
+## Use exebinder
 
 `python exebinder.py --help`
 
@@ -56,7 +58,7 @@ Bind trojan.exe with xxx.pdf and UAC permission. When new.exe running, the defau
 `python exebinder --prog resume.pdf --uac xxx.pdf trojan.exe --out new.exe`
 
 
-### TODO
+## TODO
 
 I will add the feather of auto check the file type, so the --x86 and --no-gui parameter may be depreciated.
 
