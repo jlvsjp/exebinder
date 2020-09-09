@@ -47,7 +47,7 @@ And then make sure that gcc/g++/windres is on your Windows %PATH% environment va
 
 Bind trojan.exe with xxx.exe which is a CLI program with UAC permission, and new.exe is be generated. When new.exe is running, you can see the process description is "Microsoft Windows Command Line Program".
 
-`python exebinder.py --uac --no-gui --dec "Microsoft Windows Command Line Program" xxx.exe trojan.exe` --out new.exe 
+`python exebinder.py --uac --no-gui --dec "Microsoft Windows Command Line Program" xxx.exe trojan.exe --out new.exe` 
  
 Bind trojan.exe with xxx.exe which is a GUI program and x86 architecture.
 
