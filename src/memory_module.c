@@ -34,7 +34,7 @@
 #include <winnt.h>
 #include <stddef.h>
 #include <tchar.h>
-#ifdef DEBUG_OUTPUT
+#ifdef _DEBUG
 #include <stdio.h>
 #endif
 
@@ -132,7 +132,7 @@ OffsetPointer(void* data, ptrdiff_t offset) {
 static inline void
 OutputLastError(const char *msg)
 {
-#ifndef DEBUG_OUTPUT
+#ifndef _DEBUG
     UNREFERENCED_PARAMETER(msg);
 #else
     LPVOID tmp;
@@ -894,17 +894,22 @@ void MemoryFreeLibrary(HMEMORYMODULE mod)
 int MemoryCallEntryPoint(HMEMORYMODULE mod)
 {
     PMEMORYMODULE module = (PMEMORYMODULE)mod;
-    /*
+    
+    #ifdef _DEBUG
     if (module->exeEntry == NULL){
         printf("exeEntry is null!\n");
+        MessageBoxA(NULL, "exeEntry is null!", "error", MB_OK);
     }
 
     if (!module->isRelocated){
         printf("not relocated!\n");
+        MessageBoxA(NULL, "not relocated!", "error", MB_OK);
     }
-    */
+    #endif
+    
 
-    if (module == NULL || module->isDLL || module->exeEntry == NULL || !module->isRelocated) {
+    // if (module == NULL || module->isDLL || module->exeEntry == NULL || !module->isRelocated) {
+    if (module == NULL || module->isDLL || module->exeEntry == NULL) {
         return -1;
     }
 
